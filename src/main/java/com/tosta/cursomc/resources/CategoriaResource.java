@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tosta.cursomc.domain.Categoria;
 import com.tosta.cursomc.services.CategoriaService;
+import com.tosta.cursomc.services.exceptions.ObjectNotFoundException;
+
 
 @RestController
 @RequestMapping(value="/categorias")
@@ -19,7 +21,7 @@ public class CategoriaResource {
 	
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<?> find(@PathVariable Integer id) throws ObjectNotFoundException {
 		
 		Categoria obj = service.buscar(id);
 		
