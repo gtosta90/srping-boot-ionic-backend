@@ -3,10 +3,12 @@ package com.tosta.cursomc.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.tosta.cursomc.domain.Categoria;
 import com.tosta.cursomc.repository.CategoriaRepository;
+import com.tosta.cursomc.services.exceptions.DataIntegrityException;
 import com.tosta.cursomc.services.exceptions.ObjectNotFoundException;
 
 
@@ -31,5 +33,14 @@ public class CategoriaService {
 	public Categoria update(Categoria obj) throws ObjectNotFoundException {
 		find(obj.getId());
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) throws ObjectNotFoundException {
+		find(id);
+		try {
+			repo.deleteById(id);			
+		}catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível escluir uma categoria que possui produtos");
+		}
 	}
 }
